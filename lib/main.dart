@@ -1,4 +1,5 @@
 import 'package:figma_desaign_ecommerce/screens/Product_screen.dart';
+import 'package:figma_desaign_ecommerce/screens/addproduct_screen.dart';
 import 'package:figma_desaign_ecommerce/screens/logginscreen.dart';
 import 'package:figma_desaign_ecommerce/screens/product_view.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
@@ -27,21 +27,21 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
-final GoRouter _router = GoRouter(
-  initialLocation: '/Logginscreen',
-  routes: [
+final GoRouter _router = GoRouter(initialLocation: '/Logginscreen', routes: [
   GoRoute(
     path: "/Productscreen",
     builder: (context, state) => ProductScreen(),
   ),
   GoRoute(
     path: "/Logginscreen",
-    builder: (context, state) => LogginScreen(),
+    builder: (context, state) => const LogginScreen(),
   ),
   GoRoute(
     path: "/Productview",
-    builder: (context, state) =>  ProductView(),
+    builder: (context, state) => const ProductView(),
   ),
- 
+  GoRoute(
+    path: "/AddProductScreen",
+    builder: (context, state) => const AddProductScreen(),
+  ),
 ]);

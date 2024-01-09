@@ -1,30 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProductScreen extends StatelessWidget {
-  const ProductScreen({super.key});
+  ProductScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Container(
-          width: 30,
-          height: 30,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(
-                'asset/images/tabler_logout-2.png',
+        leading: GestureDetector(
+          onTap: () => _bottomSheet(context),
+          child: Container(
+            width: 30,
+            height: 30,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                  'asset/images/tabler_logout-2.png',
+                ),
+                // fit: BoxFit.fill,
               ),
-              // fit: BoxFit.fill,
             ),
           ),
         ),
-        title: Text('Product '),
+        title: const Text('Product '),
         centerTitle: true,
         actions: [
           GestureDetector(
-            onTap: () => (context).go('/Productview'),
+            onTap: () => (context).go('/AddProductScreen'),
             child: Container(
               width: 30,
               height: 30,
@@ -42,47 +46,190 @@ class ProductScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
+          const SizedBox(
+            height: 50,
+          ),
           GridView.builder(
-            itemCount: 5,
+            itemCount: gridData.length,
             shrinkWrap: true,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisSpacing: 5, mainAxisSpacing: 5, crossAxisCount: 2),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisSpacing: 5,
+              mainAxisSpacing: 5,
+              crossAxisCount: 2,
+              mainAxisExtent: 260,
+            ),
             itemBuilder: (context, index) {
-              return Stack(
-                children: [
-                  Container(
-                    width: 180,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      image: DecorationImage(
-                        image: AssetImage(
-                          'asset/images/Rectangle 1.png',
+              return Padding(
+                padding: const EdgeInsets.all(10),
+                child: Stack(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            (context).go('/ProductView');
+                          },
+                          child: Image.asset(
+                            gridData[index]['image'],
+                          ),
                         ),
-                        fit: BoxFit.fill,
+                        Text(
+                          gridData[index]['brand'],
+                          style: GoogleFonts.poppins(fontSize: 10),
+                        ),
+                        Text(
+                          gridData[index]['title'],
+                          style: GoogleFonts.poppins(),
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              gridData[index]['discout'].toString(),
+                              style: const TextStyle(
+                                decoration: TextDecoration.lineThrough,
+                              ),
+                            ),
+                            Text(
+                              gridData[index]['price'].toString(),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Positioned(
+                      bottom: 40,
+                      right: 20,
+                      child: Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: const Icon(
+                          Icons.favorite_border,
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 20,
-                    child:Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.white
+                    Visibility(
+                      visible: gridData[index]['off_per'].isNotEmpty,
+                      child: Chip(
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(20),
+                                bottomRight: Radius.circular(30),
+                                bottomLeft: Radius.circular(30))),
+                        backgroundColor: Colors.red,
+                        label: Text(
+                          gridData[index]['off_per'].toString(),
+                        ),
+                        labelStyle: const TextStyle(
+                          color: Colors.white,
+                        ),
                       ),
-                      child: Icon(Icons.favorite))),
-
-                      Text('data')
-
-                ],
+                    ),
+                  ],
+                ),
               );
             },
-          )
+          ),
         ],
       ),
     );
   }
+
+  final List<Map<String, dynamic>> gridData = [
+    {
+      'image': 'asset/images/cardimg.png',
+      'off_per': '',
+      'brand': 'mango',
+      'title': 'T-Shirt SPANISH',
+      'price': "9\$",
+      'discout': ''
+    },
+    {
+      'image': 'asset/images/photo.png',
+      'off_per': '-20%',
+      'brand': 'Dorothy Perkins',
+      'title': 'Blouse',
+      'price': "14\$",
+      'off_price': '14',
+      'discout': '21\$'
+    },
+    {
+      'image': 'asset/images/cardimg.png',
+      'off_per': '',
+      'brand': 'mango',
+      'title': 'T-Shirt SPANISH',
+      'price': "9\$",
+      'discout': ''
+    },
+    {
+      'image': 'asset/images/photo.png',
+      'off_per': '-20%',
+      'brand': 'Dorothy Perkins',
+      'title': 'Blouse',
+      'price': "14\$",
+      'off_price': '14',
+      'discout': '21\$'
+    },
+  ];
+}
+
+Future<void> _bottomSheet(BuildContext context) {
+  return showModalBottomSheet(
+    context: context,
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+    builder: (BuildContext context) {
+      return SizedBox(
+        height: 200,
+        // Add your content here
+        child: Column(
+          children: [
+            Row(
+              children: [
+                const SizedBox(
+                  width: 200,
+                ),
+                const SizedBox(
+                  height: 50,
+                ),
+                Text(
+                  'Logout',
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold, fontSize: 20),
+                )
+              ],
+            ),
+            const Text(
+              'Are you sure want to logout?',
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {},
+                    child: const Text(
+                      'Yes',
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {},
+                    child: const Text(
+                      'no',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }
