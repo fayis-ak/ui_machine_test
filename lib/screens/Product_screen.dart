@@ -44,98 +44,99 @@ class ProductScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 50,
-          ),
-          GridView.builder(
-            itemCount: gridData.length,
-            shrinkWrap: true,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisSpacing: 5,
-              mainAxisSpacing: 5,
-              crossAxisCount: 2,
-              mainAxisExtent: 260,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 50,
             ),
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(10),
-                child: Stack(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            (context).go('/ProductView');
-                          },
-                          child: Image.asset(
-                            gridData[index]['image'],
+            GridView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: gridData.length,
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisSpacing: 5,
+                mainAxisSpacing: 5,
+                crossAxisCount: 2,
+                mainAxisExtent: 260,
+              ),
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Stack(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              (context).go('/ProductView');
+                            },
+                            child: Image.asset(
+                              gridData[index]['image'],
+                            ),
+                          ),
+                          Text(
+                            gridData[index]['brand'],
+                            style: GoogleFonts.poppins(fontSize: 10),
+                          ),
+                          Text(
+                            gridData[index]['title'],
+                            style: GoogleFonts.poppins(),
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                gridData[index]['discout'].toString(),
+                                style: const TextStyle(
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                              ),
+                              Text(
+                                gridData[index]['price'].toString(),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Positioned(
+                        bottom: 40,
+                        right: 20,
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: const Icon(
+                            Icons.favorite_border,
+                            color: Colors.grey,
                           ),
                         ),
-                        Text(
-                          gridData[index]['brand'],
-                          style: GoogleFonts.poppins(fontSize: 10),
-                        ),
-                        Text(
-                          gridData[index]['title'],
-                          style: GoogleFonts.poppins(),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              gridData[index]['discout'].toString(),
-                              style: const TextStyle(
-                                decoration: TextDecoration.lineThrough,
-                              ),
+                      ),
+                     
+        
+                      Visibility(
+                         visible: gridData[index]['off_per'].isNotEmpty,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.red
                             ),
-                            Text(
-                              gridData[index]['price'].toString(),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Positioned(
-                      bottom: 40,
-                      right: 20,
-                      child: Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: const Icon(
-                          Icons.favorite_border,
-                          color: Colors.grey,
+                            child: Text('-20%',style: GoogleFonts.poppins(color: Colors.white,fontSize: 13),),
+                          ),
                         ),
                       ),
-                    ),
-                    Visibility(
-                      visible: gridData[index]['off_per'].isNotEmpty,
-                      child: Chip(
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(30),
-                                topRight: Radius.circular(20),
-                                bottomRight: Radius.circular(30),
-                                bottomLeft: Radius.circular(30))),
-                        backgroundColor: Colors.red,
-                        label: Text(
-                          gridData[index]['off_per'].toString(),
-                        ),
-                        labelStyle: const TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ],
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -175,6 +176,24 @@ class ProductScreen extends StatelessWidget {
       'off_price': '14',
       'discout': '21\$'
     },
+    //
+     {
+      'image': 'asset/images/cardimg.png',
+      'off_per': '',
+      'brand': 'mango',
+      'title': 'T-Shirt SPANISH',
+      'price': "9\$",
+      'discout': ''
+    },
+     {
+      'image': 'asset/images/cardimg.png',
+      'off_per': '',
+      'brand': 'mango',
+      'title': 'T-Shirt SPANISH',
+      'price': "9\$",
+      'discout': ''
+    },
+   
   ];
 }
 
@@ -209,22 +228,29 @@ Future<void> _bottomSheet(BuildContext context) {
             ),
             Row(
               children: [
+                SizedBox(width: 50,),
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      (context).go('/Logginscreen');
+                    },
                     child: const Text(
                       'Yes',
                     ),
                   ),
                 ),
+                SizedBox(width: 50,),
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      (context).pop();
+                    },
                     child: const Text(
                       'no',
                     ),
                   ),
                 ),
+                SizedBox(width: 50,),
               ],
             ),
           ],

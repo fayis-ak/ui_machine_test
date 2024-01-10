@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({super.key});
@@ -14,6 +15,12 @@ class _CategoriesScreenState extends State<AddProductScreen> {
       child: Scaffold(
         backgroundColor: const Color.fromARGB(255, 219, 216, 216),
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_new_outlined),
+            onPressed: (){
+              (context).go('/ProductScreen');
+            },
+          ),
           title: const Text('Add Product'),
           elevation: 0,
         ),
